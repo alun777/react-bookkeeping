@@ -1,26 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import PriceList from './components/PriceList';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+const items = [
+  {
+    "id": 1,
+    "title": "travel",
+    "price": 200,
+    "date": "01-07-2019",
+    "category": {
+      "id": 1,
+      "name": "travel",
+      "type": "outcome"
+    }
+  },
+  {
+    "id": 2,
+    "title": "travel",
+    "price": 300,
+    "date": "01-07-2019",
+    "category": {
+      "id": 1,
+      "name": "travel",
+      "type": "outcome"
+    }
+  }
+]
+
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <PriceList 
+          items={items}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+        </PriceList>
+
+      </div>
+    )
+  }
 }
 
 export default App;
