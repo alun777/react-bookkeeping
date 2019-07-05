@@ -9,8 +9,9 @@ import MonthPicker from '../components/MonthPicker';
 import PriceList from '../components/PriceList';
 import ViewTab from '../components/ViewTab';
 import CreateBtn from '../components/CreateBtn';
+import { Tabs, Tab } from '../components/Tabs';
 
-const categoies = {
+const categories = {
   "1": {
     "id": 1,
     "name": "Travel",
@@ -50,20 +51,20 @@ const newItem = {
   "cid": 2
 }
 
+const tabsText = [LIST_VIEW, CHART_VIEW]
 class Home extends Component {
-
   constructor(props) {
     super(props)
     this.state = {
       items,
       currentDate: parseToYearAndMonth(),
-      tabView: LIST_VIEW
+      tabView: tabsText[0]
     }
   }
 
-  changeView = (view) => {
+  changeView = (index) => {
     this.setState({
-      tabView: view
+      tabView: tabsText[index]
     })
   }
   changeDate = (year, month) => {
@@ -102,7 +103,7 @@ class Home extends Component {
   render() {
     const { currentDate, tabView } = this.state
     const itemsWithCategory = this.state.items.map(item => {
-      item.category = categoies[item.cid]
+      item.category = categories[item.cid]
       return item
     }).filter(item => {
       return item.date.includes(`${currentDate.month}-${padLeft(currentDate.year)}`)
@@ -141,6 +142,30 @@ class Home extends Component {
           </div>
         </header>
         <div className="content-area py-3 px-3">
+          <Tabs activeIndex={0} onTabChange={this.changeView}>
+            <Tab>
+              <svg
+                className="icon rounded-circle mr-2"
+                aria-hidden="true"
+                fontSize="25px"
+                color={'#007bff'}
+              >
+                <use xlinkHref="#iconliebiao"></use>
+              </svg>
+              List View
+            </Tab>
+            <Tab>
+              <svg
+                className="icon rounded-circle mr-2"
+                aria-hidden="true"
+                fontSize="25px"
+                color={'#007bff'}
+              >
+                <use xlinkHref="#icontubiao"></use>
+              </svg>
+              Chart View
+            </Tab>
+          </Tabs>
           <ViewTab
             activeTab={tabView}
             onTabChange={this.changeView} />
