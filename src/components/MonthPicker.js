@@ -12,6 +12,22 @@ class MonthPicker extends Component {
     }
   }
 
+  componentDidMount(){
+    document.addEventListener('click', this.handleClick, false)
+  }
+
+  componentWillUnmount(){
+    document.removeEventListener('click', this.handleClick, false)
+  }
+
+  handleClick = (event) => {
+    if (!(this.button_node === event.target || this.dropdown_node == null )){
+      this.setState({
+        isOpen: false
+      })
+    }
+  }
+
   toggleDropDown = (event) => {
     event.preventDefault()
     this.setState({
@@ -43,45 +59,52 @@ class MonthPicker extends Component {
     const yearRange = range(9, -4).map(item => item + year)
 
     return (
-      <div className="dropdown month-picker-component">
+      <div className="dropdown month-picker-component" >
         <h4>Select Month</h4>
-        <button
-          className="btn btn-lg btn-secondary dropdown-toggle"
-          onClick={this.toggleDropDown}
-        >
-          {`${selectedYear} / ${padLeft(selectedMonth)}`}
-        </button>
-        {
-          isOpen &&
-          <div className="dropdown-menu" style={{ display: 'block' }}>
-            <div className="row">
-              <div className="col border-right">
-                {yearRange.map((yearNumber, index) => (
-                  <a
-                    href='/'
-                    key={index}
-                    className={(yearNumber === selectedYear) ? 'dropdown-item active' : 'dropdown-item'}
-                    onClick={(event) => { this.selectYear(event, yearNumber) }}
-                  >
-                    {yearNumber}
-                  </a>
-                ))}
-              </div>
-              <div className="col">
-                {monthRange.map((monthNumber, index) => (
-                  <a
-                    href='/'
-                    key={index}
-                    className={(monthNumber === selectedMonth) ? 'dropdown-item active' : 'dropdown-item'}
-                    onClick={(event) => { this.selectMonth(event, monthNumber) }}
-                  >
-                    {padLeft(monthNumber)}
-                  </a>
-                ))}
+        <div style={{ position: 'relative', width: '100%'}}>
+          <button 
+            ref={(ref)=>{this.button_node=ref}}
+            className="btn btn-lg btn-secondary dropdown-toggle"
+            onClick={this.toggleDropDown}
+
+          >
+            {`${selectedYear} / ${padLeft(selectedMonth)}`}
+          </button>
+          {
+            isOpen &&
+            <div 
+              className="dropdown-menu" style={{ display: 'block', position: 'absolute', left:'50%', marginLeft: '-70px' }}
+              ref={(ref)=>{this.dropdown_node=ref}}
+            >
+              <div className="row">
+                <div className="col border-right">
+                  {yearRange.map((yearNumber, index) => (
+                    <a
+                      href='/'
+                      key={index}
+                      className={(yearNumber === selectedYear) ? 'dropdown-item active' : 'dropdown-item'}
+                      onClick={(event) => { this.selectYear(event, yearNumber) }}
+                    >
+                      {yearNumber}
+                    </a>
+                  ))}
+                </div>
+                <div className="col">
+                  {monthRange.map((monthNumber, index) => (
+                    <a
+                      href='/'
+                      key={index}
+                      className={(monthNumber === selectedMonth) ? 'dropdown-item active' : 'dropdown-item'}
+                      onClick={(event) => { this.selectMonth(event, monthNumber) }}
+                    >
+                      {padLeft(monthNumber)}
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        }
+          }
+        </div>
       </div>
     )
   }
